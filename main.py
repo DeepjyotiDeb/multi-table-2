@@ -11,6 +11,11 @@ def test(db:Session = Depends(get_db)):
     posts = db.query(models.BlogDetails).all()
     return posts
 
+@app.get("/get-post{uid}")
+def post(uid:int, db:Session=Depends(get_db)):
+    post = db.query(models.BlogDetails).filter(models.BlogDetails.id == uid).first()
+    return post
+
 @app.post('/create-posts/', tags = ['blogs'])
 def create_post(user: schemas.Blogger, db:Session = Depends(get_db)):
     post = models.BlogDetails(title = user.title, 
